@@ -122,26 +122,9 @@ class TransactionData
         return sizeof($missingKeys) === 0;
     }
 
-    /**
-     * Get all fields serialized. They must be always in the same order.
-     *
-     * @param bool $withoutHMAC A boolean parameter
-     * @return array All filled serialized as a string
-     */
-    private function getFilledFields($withoutHMAC)
+    public function setTime(TimeValue $param)
     {
-        $parameterConstructor = new ParameterConstructor($this, $withoutHMAC);
-        return $parameterConstructor->asArray();
-    }
-
-    /**
-     * Encode all fields send as parameters.
-     */
-    private function encodeParameters()
-    {
-        $params = $this->getFilledFields(TransactionData::WithoutHMAC);
-        $binarizedSecretKey = $this->getHMAC()->binarize();
-
+        $this->param = $param;
     }
 
     public function toString($withoutHMAC = TransactionData::WithHMAC)
@@ -150,114 +133,9 @@ class TransactionData
         return implode('&', $fields);
     }
 
-    public function setTotal(TotalValue $total)
-    {
-        $this->total = $total;
-    }
-
-    public function getTotal()
-    {
-        return $this->total;
-    }
-
-    public function setSite(SiteValue $site)
-    {
-        $this->site = $site;
-    }
-
-    public function getSite()
-    {
-        return $this->site;
-    }
-
-    public function setRang(RangValue $rang)
-    {
-        $this->rang = $rang;
-    }
-
-    public function getRang()
-    {
-        return $this->rang;
-    }
-
-    public function setId(IDValue $id)
-    {
-        $this->id = $id;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setDevise(DeviseValue $devise)
-    {
-        $this->devise = $devise;
-    }
-
-    public function getDevise()
-    {
-        return $this->devise;
-    }
-
-    public function setCommand(CommandValue $cmd)
-    {
-        $this->command = $cmd;
-    }
-
-    public function getCommand()
-    {
-        return $this->command;
-    }
-
-    public function setHash(HashValue $hash)
-    {
-        $this->hash = $hash;
-    }
-
-    public function getHash()
-    {
-        return $this->hash;
-    }
-
-    public function setHMAC(HMacValue $hmac)
-    {
-        $this->hmac = $hmac;
-    }
-
-    public function getHMAC()
-    {
-        return $this->hmac;
-    }
-
-    public function setHolder(HolderValue $holder)
-    {
-        $this->holder = $holder;
-    }
-
-    public function getHolder()
-    {
-        return $this->holder;
-    }
-
-    public function setTime(TimeValue $param)
-    {
-        $this->param = $param;
-    }
-
     public function getTime()
     {
         return $this->param;
-    }
-
-    public function setFeedback(FeedbackValue $feedback)
-    {
-        $this->feedback = $feedback;
-    }
-
-    public function getFeedback()
-    {
-        return $this->feedback;
     }
 
     /**
@@ -278,5 +156,153 @@ class TransactionData
             $this->getHash(),
             $this->getHMAC(),
         ]);
+    }
+
+    public function getSite()
+    {
+        return $this->site;
+    }
+
+    public function setSite(SiteValue $site)
+    {
+        $this->site = $site;
+    }
+
+    public function getRang()
+    {
+        return $this->rang;
+    }
+
+    public function setRang(RangValue $rang)
+    {
+        $this->rang = $rang;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId(IDValue $id)
+    {
+        $this->id = $id;
+    }
+
+    public function getDevise()
+    {
+        return $this->devise;
+    }
+
+    public function setDevise(DeviseValue $devise)
+    {
+        $this->devise = $devise;
+    }
+
+    public function getCommand()
+    {
+        return $this->command;
+    }
+
+    public function setCommand(CommandValue $cmd)
+    {
+        $this->command = $cmd;
+    }
+
+    public function getFeedback()
+    {
+        return $this->feedback;
+    }
+
+    public function setFeedback(FeedbackValue $feedback)
+    {
+        $this->feedback = $feedback;
+    }
+
+    public function getHolder()
+    {
+        return $this->holder;
+    }
+
+    public function setHolder(HolderValue $holder)
+    {
+        $this->holder = $holder;
+    }
+
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    public function setTotal(TotalValue $total)
+    {
+        $this->total = $total;
+    }
+
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    public function setHash(HashValue $hash)
+    {
+        $this->hash = $hash;
+    }
+
+    /**
+     * Test is all required fields are instanced.The value objects can't be created with wrong values
+     *
+     * @return bool True if all required values exists.
+     */
+    public function isValid()
+    {
+        return
+            $this->getSite() !== null &&
+            $this->getRang() !== null &&
+            $this->getId() !== null &&
+            $this->getDevise() !== null &&
+            $this->getCommand() !== null &&
+            $this->getFeedback() !== null &&
+            $this->getHolder() !== null &&
+            $this->getTotal() !== null &&
+            $this->getHash() !== null &&
+            $this->getHMAC() !== null;
+    }
+
+    /**
+     * Encode all fields send as parameters.
+     */
+    private function encodeParameters()
+    {
+        $params = $this->getFilledFields(TransactionData::WithoutHMAC);
+        $binarizedSecretKey = $this->getHMAC()->binarize();
+
+    }
+
+    /**
+     * Get all fields serialized. They must be always in the same order.
+     *
+     * @param bool $withoutHMAC A boolean parameter
+     * @return array All filled serialized as a string
+     */
+    private function getFilledFields($withoutHMAC)
+    {
+        $parameterConstructor = new ParameterConstructor($this, $withoutHMAC);
+        return $parameterConstructor->asArray();
+    }
+
+    /**
+     * @return HMacValue
+     */
+    public function getHMAC()
+    {
+        return $this->hmac;
+    }
+
+    /**
+     * @param HMacValue $hmac
+     */
+    public function setHMAC(HMacValue $hmac)
+    {
+        $this->hmac = $hmac;
     }
 }
