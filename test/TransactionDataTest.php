@@ -379,4 +379,32 @@ class TransactionDataTest extends TestCase
 
         $this->assertTrue($result);
     }
+
+    public function testIsntValid()
+    {
+        $total = 10.0;
+        $rang = 7;
+        $site = 1234567;
+        $id = 123;
+        $devise = Devises::EUR;
+        $command = 'some-customer-id';
+        $hash = HashValue::SHA512;
+        $hmac = '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969';
+        $holder = 'this-is-me@somewhere.tld';
+
+        $transaction = new TransactionData();
+        $transaction->setTotal(new TotalValue($total));
+        $transaction->setRang(new RangValue($rang));
+        $transaction->setSite(new SiteValue($site));
+        $transaction->setId(new IDValue($id));
+        $transaction->setDevise(new DeviseValue($devise));
+        $transaction->setCommand(new CommandValue($command));
+        $transaction->setHash(new HashValue($hash));
+        $transaction->setHMAC(new HMACValue($hmac));
+        $transaction->setHolder(new HolderValue($holder));
+
+        $result = $transaction->isValid();
+
+        $this->assertFalse($result);
+    }
 }
