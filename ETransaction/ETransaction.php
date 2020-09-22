@@ -1,5 +1,7 @@
 <?php
 
+require_once 'Exceptions/ETransactionException.php';
+
 /**
  * Crédit Agricole e-Transaction Library
  */
@@ -14,10 +16,31 @@ class ETransaction
         'preprod' => ['preprod-tpeweb'],
         'prod' => ['tpeweb'], // , 'tpeweb1']
     ];
+    /**
+     * @var TransactionData
+     */
+    private $transactionContainer;
 
     public function __construct($usePreprod = false)
     {
         $this->preprod = $usePreprod;
+    }
+
+    /**
+     * Set the transaction data. If the TransactionData is not valid,
+     * throw an ETransactionException
+     *
+     * @param TransactionData $data The data for the transaction
+     * @throws ETransactionException
+     * @see TransactionData::isValid
+     */
+    public function setTransactionData(TransactionData $data)
+    {
+        if (!$data->isValid()) {
+            throw new ETransactionException('Transaction is invalid');
+        }
+
+        $this->transactionContainer = $data;
     }
 
     /**
