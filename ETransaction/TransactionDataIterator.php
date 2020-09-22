@@ -3,7 +3,7 @@
 /**
  * Iterate only non null array items
  */
-class TransactionContainerIterator implements Iterator
+class TransactionDataIterator implements Iterator
 {
     /**
      * @var array

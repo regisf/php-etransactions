@@ -15,7 +15,7 @@ require_once 'ETransaction/Values/TimeValue.php';
 require_once 'ETransaction/Values/TotalValue.php';
 
 
-class TransactionContainer
+class TransactionData
 {
     /* Declare boolean constants for expressiveness */
     const WithoutHMAC = true;
@@ -79,12 +79,12 @@ class TransactionContainer
      * Factory : create a container from data.
      *
      * @param $data array
-     * @return TransactionContainer
-     * @throws TransactionContainerException|\ETransaction\Values\ValueException
+     * @return TransactionData
+     * @throws TransactionContainerException|ValueException
      */
     public static function fromData(array $data)
     {
-        $container = new TransactionContainer();
+        $container = new TransactionData();
 
         if (gettype($data) === 'array') {
             $missingKeys = [];
@@ -139,12 +139,12 @@ class TransactionContainer
      */
     private function encodeParameters()
     {
-        $params = $this->getFilledFields(TransactionContainer::WithoutHMAC);
+        $params = $this->getFilledFields(TransactionData::WithoutHMAC);
         $binarizedSecretKey = $this->getHMAC()->binarize();
 
     }
 
-    public function toString($withoutHMAC = TransactionContainer::WithHMAC)
+    public function toString($withoutHMAC = TransactionData::WithHMAC)
     {
         $fields = $this->getFilledFields($withoutHMAC);
         return implode('&', $fields);
@@ -262,11 +262,11 @@ class TransactionContainer
 
     /**
      * Create a iterator object with all private fields
-     * @return TransactionContainerIterator The field iterator
+     * @return TransactionDataIterator The field iterator
      */
     public function getIterator()
     {
-        return new TransactionContainerIterator([
+        return new TransactionDataIterator([
             $this->getSite(),
             $this->getRang(),
             $this->getId(),

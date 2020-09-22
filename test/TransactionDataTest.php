@@ -1,6 +1,6 @@
 <?php
 
-require_once 'ETransaction/TransactionContainer.php';
+require_once 'ETransaction/TransactionData.php';
 require_once 'ETransaction/Devises.php';
 require_once 'ETransaction/Values/CommandValue.php';
 require_once 'ETransaction/Values/FeedbackValue.php';
@@ -18,7 +18,7 @@ require_once 'ETransaction/ParameterConstructor.php';
 
 use PHPUnit\Framework\TestCase;
 
-class TransactionContainerTest extends TestCase
+class TransactionDataTest extends TestCase
 {
     public function testFactoryRequiredData()
     {
@@ -34,7 +34,7 @@ class TransactionContainerTest extends TestCase
         $time = 1600424772;  // The date when the test was created
         $feedback = 'not';
 
-        $transaction = TransactionContainer::fromData([
+        $transaction = TransactionData::fromData([
             'total' => $total,
             'rang' => $rang,
             'site' => $site,
@@ -62,7 +62,7 @@ class TransactionContainerTest extends TestCase
 
     public function test_ensureRequiredKeysExists()
     {
-        $transactionContainer = new TransactionContainer();
+        $transactionContainer = new TransactionData();
         try {
             $result = $transactionContainer->areRequiredKeysExist(
                 ['total' => null, 'rang' => null, 'site' => null, 'id' => null,
@@ -77,7 +77,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyTotalShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['rang' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
     }
@@ -85,7 +85,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyRangShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
     }
@@ -93,7 +93,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeySiteShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
     }
@@ -101,7 +101,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyIDShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'site' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
     }
@@ -109,7 +109,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyDeviseShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
     }
@@ -117,7 +117,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyCommandShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
     }
@@ -125,7 +125,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyHashShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
     }
@@ -133,7 +133,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyHMACShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
     }
@@ -141,7 +141,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyPorteurShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'time' => null, 'feedback' => null]);
     }
@@ -149,7 +149,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyTimeShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'feedback' => null]);
     }
@@ -157,7 +157,7 @@ class TransactionContainerTest extends TestCase
     public function testMissingRequiredKeyURLBackShouldRaiseAnException()
     {
         $this->expectException(TransactionContainerException::class);
-        TransactionContainer::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
+        TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null]);
     }
@@ -165,7 +165,7 @@ class TransactionContainerTest extends TestCase
     public function testSetTotal()
     {
         $expected = new TotalValue(10);
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setTotal($expected);
         $this->assertSame($transac->getTotal()->getValue(), $expected->getValue());
     }
@@ -173,7 +173,7 @@ class TransactionContainerTest extends TestCase
     public function testSetSite()
     {
         $expected = new SiteValue(1234567);
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setSite($expected);
         $result = $transac->getSite()->getValue();
 
@@ -183,7 +183,7 @@ class TransactionContainerTest extends TestCase
     public function testSetRang()
     {
         $expected = new RangValue('02');
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setRang($expected);
         $result = $transac->getRang()->getValue();
 
@@ -193,7 +193,7 @@ class TransactionContainerTest extends TestCase
     public function testSetId()
     {
         $expected = new IDValue(123);
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setId($expected);
         $result = $transac->getId()->getValue();
 
@@ -203,7 +203,7 @@ class TransactionContainerTest extends TestCase
     public function testSetDevise()
     {
         $expected = new RangValue('02');
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setRang($expected);
         $result = $transac->getRang()->getValue();
 
@@ -213,7 +213,7 @@ class TransactionContainerTest extends TestCase
     public function testSetCommand()
     {
         $expected = new CommandValue('some-id');
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setCommand($expected);
         $result = $transac->getCommand()->getValue();
 
@@ -223,7 +223,7 @@ class TransactionContainerTest extends TestCase
     public function testSetHash()
     {
         $expected = new HashValue(HashValue::SHA256);
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setHash($expected);
         $result = $transac->getHash()->getValue();
 
@@ -233,7 +233,7 @@ class TransactionContainerTest extends TestCase
     public function testSetHMAC()
     {
         $expected = new HMacValue('Bach music is into space');
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setHMAC($expected);
         $result = $transac->getHMAC()->getValue();
 
@@ -244,7 +244,7 @@ class TransactionContainerTest extends TestCase
     public function testSetHolder()
     {
         $expected = new HolderValue('bach@into-space.com');
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setHolder($expected);
         $result = $transac->getHolder()->getValue();
 
@@ -255,7 +255,7 @@ class TransactionContainerTest extends TestCase
     public function testSetTime()
     {
         $expected = new TimeValue(1);
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setTime($expected);
         $result = $transac->getTime()->getValue();
 
@@ -265,7 +265,7 @@ class TransactionContainerTest extends TestCase
     public function testSetFeedback()
     {
         $expected = new FeedbackValue('Mt:M;Ref:R;Auto:A;Erreur:E');
-        $transac = new TransactionContainer();
+        $transac = new TransactionData();
         $transac->setFeedback($expected);
         $result = $transac->getFeedback()->getValue();
 
@@ -286,7 +286,7 @@ class TransactionContainerTest extends TestCase
         $time = 1600424772;  // The date when the test was created
         $feedback = 'not';
 
-        $transaction = TransactionContainer::fromData([
+        $transaction = TransactionData::fromData([
             'total' => $total,
             'rang' => $rang,
             'site' => $site,
@@ -329,7 +329,7 @@ class TransactionContainerTest extends TestCase
         $time = 1600424772;  // The date when the test was created
         $feedback = 'not';
 
-        $transaction = TransactionContainer::fromData([
+        $transaction = TransactionData::fromData([
             'total' => $total,
             'rang' => $rang,
             'site' => $site,
@@ -343,7 +343,7 @@ class TransactionContainerTest extends TestCase
             'feedback' => $feedback,
         ]);
 
-        $result = $transaction->toString(TransactionContainer::WithoutHMAC);
+        $result = $transaction->toString(TransactionData::WithoutHMAC);
         $rang = sprintf("%'.03d", $rang);
 
         $this->assertSame("PBX_SITE=$site" .

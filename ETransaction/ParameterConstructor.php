@@ -4,7 +4,7 @@
 class ParameterConstructor
 {
     /**
-     * @var TransactionContainer
+     * @var TransactionData
      */
     private $container;
 
@@ -15,7 +15,7 @@ class ParameterConstructor
 
     /**
      * ParameterConstructor constructor.
-     * @param TransactionContainer $container
+     * @param TransactionData $container
      * @param bool $withoutHMAC if set, don't add the HMAC field
      */
     public function __construct($container, $withoutHMAC)

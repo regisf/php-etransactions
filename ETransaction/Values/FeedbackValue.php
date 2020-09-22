@@ -1,4 +1,5 @@
 <?php
+
 require_once 'ValueBase.php';
 
 class FeedbackValue extends ValueBase

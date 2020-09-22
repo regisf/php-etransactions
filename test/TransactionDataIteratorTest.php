@@ -1,16 +1,16 @@
 <?php
 
-require_once "ETransaction/TransactionContainerIterator.php";
+require_once "ETransaction/TransactionDataIterator.php";
 
 use PHPUnit\Framework\TestCase;
 
-class TransactionContainerIteratorTest extends TestCase
+class TransactionDataIteratorTest extends TestCase
 {
     public function testIterator()
     {
         $arr = [null, "one", null, null, "two", null, "three", "four", null];
         $expected = ["one", "two", "three", "four"];
-        $it = new TransactionContainerIterator($arr);
+        $it = new TransactionDataIterator($arr);
 
         $result = [];
         foreach ($it as $item) {
