@@ -18,6 +18,11 @@ class FeedbackValue extends ValueBase
         $keyVals = explode(';', $value);
         $result = array_map(function ($kv) {
             $r = explode(':', $kv);
+            if (count($r) === 1) {
+                throw new ValueException('Not well formed Key:Value element for Feedback. ' .
+                    'Key and Value must be separated by a colon');
+            }
+
             return strchr(FeedbackValue::ValidKey, $r[1]);
         }, $keyVals);
 

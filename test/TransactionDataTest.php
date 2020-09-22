@@ -32,7 +32,7 @@ class TransactionDataTest extends TestCase
         $hmac = '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969';
         $holder = 'this-is-me@somewhere.tld';
         $time = 1600424772;  // The date when the test was created
-        $feedback = 'not';
+        $feedback = 'Mt:M';
 
         $transaction = TransactionData::fromData([
             'total' => $total,
@@ -284,7 +284,7 @@ class TransactionDataTest extends TestCase
         $hmac = '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969';
         $holder = 'this-is-me@somewhere.tld';
         $time = 1600424772;  // The date when the test was created
-        $feedback = 'not';
+        $feedback = 'Mt:M';
 
         $transaction = TransactionData::fromData([
             'total' => $total,
@@ -327,7 +327,7 @@ class TransactionDataTest extends TestCase
         $hmac = '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969';
         $holder = 'this-is-me@somewhere.tld';
         $time = 1600424772;  // The date when the test was created
-        $feedback = 'not';
+        $feedback = 'Mt:M';
 
         $transaction = TransactionData::fromData([
             'total' => $total,
