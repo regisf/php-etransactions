@@ -2,11 +2,10 @@
 
 require_once 'ValueBase.php';
 
-
-
 class IDValue extends ValueBase
 {
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_IDENTIFIANT';
 
     public function isValueRegular($value)
     {
@@ -16,12 +15,5 @@ class IDValue extends ValueBase
         }
 
         return 'The id doesn\'t match the minimal requirements (1 to 9 digits)';
-
-
-    }
-
-    public function toString()
-    {
-        return 'PBX_IDENTIFIANT=' . $this->getValue();
     }
 }

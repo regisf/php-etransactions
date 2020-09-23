@@ -6,11 +6,7 @@ require_once 'ValueBase.php';
 class TotalValue extends ValueBase
 {
     protected $name = __CLASS__;
-
-    public function toString()
-    {
-        return 'PBX_TOTAL=' . $this->getValue();
-    }
+    protected $fieldName = 'PBX_TOTAL';
 
     public function isValueRegular($value)
     {

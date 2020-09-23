@@ -6,6 +6,7 @@ require_once 'ValueBase.php';
 class RangValue extends ValueBase
 {
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_RANG';
 
     public function isValueRegular($value)
     {
@@ -17,8 +18,8 @@ class RangValue extends ValueBase
         return 'The rang value  must a 3 digit number';
     }
 
-    public function toString()
+    public function getValue()
     {
-        return sprintf("PBX_RANG=%'.03d", $this->getValue());
+        return sprintf("%'.03d", parent::getValue());
     }
 }

@@ -5,6 +5,7 @@ require_once 'ValueBase.php';
 class DeviseValue extends ValueBase
 {
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_DEVISE';
 
     public function isValueRegular($value)
     {
@@ -13,10 +14,5 @@ class DeviseValue extends ValueBase
         }
 
         return 'Devise must be set as EURO';
-    }
-
-    public function toString()
-    {
-        return 'PBX_DEVISE=' . $this->getValue();
     }
 }

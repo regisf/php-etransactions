@@ -12,7 +12,7 @@ require_once 'ETransaction/Values/RangValue.php';
 require_once 'ETransaction/Values/SiteValue.php';
 require_once 'ETransaction/Values/TimeValue.php';
 require_once 'ETransaction/Values/TotalValue.php';
-require_once 'ETransaction/Exceptions/TransactionContainerException.php';
+require_once 'ETransaction/Exceptions/TransactionDataException.php';
 require_once 'ETransaction/ParameterConstructor.php';
 
 
@@ -49,14 +49,14 @@ class TransactionDataTest extends TestCase
         ]);
 
         $this->assertSame($transaction->getTotal()->getValue(), $total);
-        $this->assertSame($transaction->getRang()->getValue(), $rang);
+        $this->assertSame($transaction->getRang()->getValue(), "00$rang");
         $this->assertSame($transaction->getSite()->getValue(), $site);
         $this->assertSame($transaction->getId()->getValue(), $id);
         $this->assertSame($transaction->getDevise()->getValue(), $devise);
         $this->assertSame($transaction->getHash()->getValue(), $hash);
         $this->assertSame($transaction->getHMAC()->getValue(), $hmac);
         $this->assertSame($transaction->getHolder()->getValue(), $holder);
-        $this->assertSame($transaction->getTime()->getValue(), $time);
+        $this->assertSame($transaction->getTime()->getValue(), date('c', $time));
         $this->assertSame($transaction->getFeedback()->getValue(), $feedback);
     }
 
@@ -69,14 +69,14 @@ class TransactionDataTest extends TestCase
                     'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
                     'holder' => null, 'time' => null, 'feedback' => null]);
             $this->assertTrue($result);
-        } catch (TransactionContainerException $e) {
+        } catch (TransactionDataException $e) {
             $this->fail("Exception shouldn't be raised");
         }
     }
 
     public function testMissingRequiredKeyTotalShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
@@ -84,7 +84,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyRangShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
@@ -92,7 +92,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeySiteShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
@@ -100,7 +100,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyIDShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
@@ -108,7 +108,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyDeviseShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
@@ -116,7 +116,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyCommandShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
@@ -124,7 +124,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyHashShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hmac' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
@@ -132,7 +132,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyHMACShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null,
             'holder' => null, 'time' => null, 'feedback' => null]);
@@ -140,7 +140,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyPorteurShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'time' => null, 'feedback' => null]);
@@ -148,7 +148,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyTimeShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'feedback' => null]);
@@ -156,7 +156,7 @@ class TransactionDataTest extends TestCase
 
     public function testMissingRequiredKeyURLBackShouldRaiseAnException()
     {
-        $this->expectException(TransactionContainerException::class);
+        $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
             'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
             'holder' => null, 'time' => null]);

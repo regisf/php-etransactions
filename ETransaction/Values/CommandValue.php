@@ -5,6 +5,7 @@ require_once 'ValueBase.php';
 class CommandValue extends ValueBase
 {
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_CMD';
 
     public function isValueRegular($value)
     {
@@ -14,8 +15,4 @@ class CommandValue extends ValueBase
         return 'The command value must be at last something stringable not nothing';
     }
 
-    public function toString()
-    {
-        return 'PBX_CMD=' . $this->getValue();
-    }
 }

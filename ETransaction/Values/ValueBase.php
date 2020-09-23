@@ -3,6 +3,12 @@
 abstract class ValueBase
 {
     protected $name = __CLASS__;
+
+    /**
+     * @var string The HTML Field name. This property must be set into the derived class
+     */
+    protected $fieldName = null;
+
     private $value;
 
     public function __construct($value)
@@ -30,5 +36,18 @@ abstract class ValueBase
         return $this->name;
     }
 
-    abstract public function toString();
+    public function getFieldName()
+    {
+        return $this->fieldName;
+    }
+
+    public function toForm()
+    {
+        return '<input type="hidden" name="' . $this->fieldName . '" value="' . $this->value . '" />';
+    }
+
+    public function toString()
+    {
+        return $this->getFieldName() . '=' . $this->getValue();
+    }
 }

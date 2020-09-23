@@ -7,7 +7,7 @@ class TimeValueTest extends TestCase
     public function testIsValueRegular()
     {
         $timeValue = new TimeValue();
-        $this->assertSame(gettype($timeValue->getValue()), 'integer');
+        $this->assertSame(gettype($timeValue->getValue()), 'string');
     }
 
     public function testToString()

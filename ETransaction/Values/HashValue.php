@@ -11,6 +11,7 @@ class HashValue extends ValueBase
     const MDC2 = 'MDC2';
 
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_HASH';
 
     private $hashAlgorithm = array(
         HashValue::SHA224,
@@ -40,8 +41,4 @@ class HashValue extends ValueBase
         return false;
     }
 
-    public function toString()
-    {
-        return 'PBX_HASH=' . $this->getValue();
-    }
 }

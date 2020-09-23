@@ -6,6 +6,7 @@ require_once 'ValueBase.php';
 class TimeValue extends ValueBase
 {
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_TIME';
 
     /**
      * TimeValue constructor, allow no value.
@@ -32,8 +33,8 @@ class TimeValue extends ValueBase
         return false;
     }
 
-    public function toString()
+    public function getValue()
     {
-        return 'PBX_TIME=' . date('c', $this->getValue());
+        return date('c', parent::getValue());
     }
 }

@@ -7,6 +7,7 @@ class FeedbackValue extends ValueBase
     const ValidKey = 'MRTABCDEFGHIJjKNOoPQSUVWYZ';
     const DefaultRetour = 'Mt:M;Ref:R;Auto:A;Erreur:E';
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_RETOUR';
 
     public function __construct($value = FeedbackValue::DefaultRetour)
     {
@@ -31,10 +32,5 @@ class FeedbackValue extends ValueBase
         }
 
         return false;
-    }
-
-    public function toString()
-    {
-        return 'PBX_RETOUR=' . $this->getValue();
     }
 }

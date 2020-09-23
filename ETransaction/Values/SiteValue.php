@@ -6,6 +6,7 @@ require_once 'ValueBase.php';
 class SiteValue extends ValueBase
 {
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_SITE';
 
     public function isValueRegular($value)
     {
@@ -15,10 +16,5 @@ class SiteValue extends ValueBase
         }
 
         return 'The site value must be a seven digit number';
-    }
-
-    public function toString()
-    {
-        return 'PBX_SITE=' . $this->getValue();
     }
 }

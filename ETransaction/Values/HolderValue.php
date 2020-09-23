@@ -6,6 +6,7 @@ require_once 'ValueBase.php';
 class HolderValue extends ValueBase
 {
     protected $name = __CLASS__;
+    protected $fieldName = 'PBX_PORTEUR';
 
     public function isValueRegular($value)
     {
@@ -14,10 +15,5 @@ class HolderValue extends ValueBase
         }
 
         return "The email = '$value' isn't a valid one";
-    }
-
-    public function toString()
-    {
-        return 'PBX_PORTEUR=' . $this->getValue();
     }
 }
