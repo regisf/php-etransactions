@@ -29,7 +29,6 @@ class TransactionDataTest extends TestCase
         $devise = Devises::EUR;
         $command = 'some-customer-id';
         $hash = 'SHA512';
-        $hmac = '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969';
         $holder = 'this-is-me@somewhere.tld';
         $time = 1600424772;  // The date when the test was created
         $feedback = 'Mt:M';
@@ -42,10 +41,10 @@ class TransactionDataTest extends TestCase
             'devise' => $devise,
             'command' => $command,
             'hash' => $hash,
-            'hmac' => $hmac,
             'holder' => $holder,
             'time' => $time,
             'feedback' => $feedback,
+            'secret' => 'abcdef012456789'
         ]);
 
         $this->assertSame($transaction->getTotal()->getValue(), $total);
@@ -54,7 +53,6 @@ class TransactionDataTest extends TestCase
         $this->assertSame($transaction->getId()->getValue(), $id);
         $this->assertSame($transaction->getDevise()->getValue(), $devise);
         $this->assertSame($transaction->getHash()->getValue(), $hash);
-        $this->assertSame($transaction->getHMAC()->getValue(), $hmac);
         $this->assertSame($transaction->getHolder()->getValue(), $holder);
         $this->assertSame($transaction->getTime()->getValue(), date('c', $time));
         $this->assertSame($transaction->getFeedback()->getValue(), $feedback);
@@ -66,8 +64,8 @@ class TransactionDataTest extends TestCase
         try {
             $result = $transactionContainer->areRequiredKeysExist(
                 ['total' => null, 'rang' => null, 'site' => null, 'id' => null,
-                    'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
-                    'holder' => null, 'time' => null, 'feedback' => null]);
+                    'devise' => null, 'command' => null, 'hash' => null,
+                    'holder' => null, 'time' => null, 'feedback' => null, 'secret' => null]);
             $this->assertTrue($result);
         } catch (TransactionDataException $e) {
             $this->fail("Exception shouldn't be raised");
@@ -78,59 +76,59 @@ class TransactionDataTest extends TestCase
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['rang' => null, 'site' => null, 'id' => null,
-            'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
-            'holder' => null, 'time' => null, 'feedback' => null]);
+            'devise' => null, 'command' => null, 'hash' => null,
+            'holder' => null, 'time' => null, 'feedback' => null, 'secret' => null]);
     }
 
     public function testMissingRequiredKeyRangShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'site' => null, 'id' => null,
-            'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
-            'holder' => null, 'time' => null, 'feedback' => null]);
+            'devise' => null, 'command' => null, 'hash' => null,
+            'holder' => null, 'time' => null, 'feedback' => null, 'secret' => null]);
     }
 
     public function testMissingRequiredKeySiteShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'id' => null,
-            'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
-            'holder' => null, 'time' => null, 'feedback' => null]);
+            'devise' => null, 'command' => null, 'hash' => null,
+            'holder' => null, 'time' => null, 'feedback' => null, 'secret' => null]);
     }
 
     public function testMissingRequiredKeyIDShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null,
-            'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
-            'holder' => null, 'time' => null, 'feedback' => null]);
+            'devise' => null, 'command' => null, 'hash' => null,
+            'holder' => null, 'time' => null, 'feedback' => null, 'secret' => null]);
     }
 
     public function testMissingRequiredKeyDeviseShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
-            'command' => null, 'hash' => null, 'hmac' => null,
-            'holder' => null, 'time' => null, 'feedback' => null]);
+            'command' => null, 'hash' => null,
+            'holder' => null, 'time' => null, 'feedback' => null, 'secret' => null]);
     }
 
     public function testMissingRequiredKeyCommandShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
-            'devise' => null, 'hash' => null, 'hmac' => null,
-            'holder' => null, 'time' => null, 'feedback' => null]);
+            'devise' => null, 'hash' => null,
+            'holder' => null, 'time' => null, 'feedback' => null, 'secret' => null]);
     }
 
     public function testMissingRequiredKeyHashShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
-            'devise' => null, 'command' => null, 'hmac' => null,
-            'holder' => null, 'time' => null, 'feedback' => null]);
+            'devise' => null, 'command' => null,
+            'holder' => null, 'time' => null, 'feedback' => null, 'secret' => null]);
     }
 
-    public function testMissingRequiredKeyHMACShouldRaiseAnException()
+    public function testMissingRequiredKeySecretShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
@@ -142,24 +140,24 @@ class TransactionDataTest extends TestCase
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
-            'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
-            'time' => null, 'feedback' => null]);
+            'devise' => null, 'command' => null, 'hash' => null,
+            'time' => null, 'feedback' => null, 'secret' => null]);
     }
 
     public function testMissingRequiredKeyTimeShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
-            'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
-            'holder' => null, 'feedback' => null]);
+            'devise' => null, 'command' => null, 'hash' => null,
+            'holder' => null, 'feedback' => null, 'secret' => null]);
     }
 
     public function testMissingRequiredKeyURLBackShouldRaiseAnException()
     {
         $this->expectException(TransactionDataException::class);
         TransactionData::fromData(['total' => null, 'rang' => null, 'site' => null, 'id' => null,
-            'devise' => null, 'command' => null, 'hash' => null, 'hmac' => null,
-            'holder' => null, 'time' => null]);
+            'devise' => null, 'command' => null, 'hash' => null,
+            'holder' => null, 'time' => null, 'secret' => null]);
     }
 
     public function testSetTotal()
@@ -232,7 +230,7 @@ class TransactionDataTest extends TestCase
 
     public function testSetHMAC()
     {
-        $expected = new HMacValue('Bach music is into space');
+        $expected = new HMacValue('0123456', 'Bach music is into space', new HashValue(HashValue::SHA512));
         $transac = new TransactionData();
         $transac->setHMAC($expected);
         $result = $transac->getHMAC()->getValue();
@@ -281,7 +279,6 @@ class TransactionDataTest extends TestCase
         $devise = Devises::EUR;
         $command = 'some-customer-id';
         $hash = HashValue::SHA512;
-        $hmac = '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969';
         $holder = 'this-is-me@somewhere.tld';
         $time = 1600424772;  // The date when the test was created
         $feedback = 'Mt:M';
@@ -294,10 +291,10 @@ class TransactionDataTest extends TestCase
             'devise' => $devise,
             'command' => $command,
             'hash' => $hash,
-            'hmac' => $hmac,
             'holder' => $holder,
             'time' => $time,
             'feedback' => $feedback,
+            'secret' => '123456789aef'
         ]);
         $result = $transaction->toString();
         $rang = sprintf("%'.03d", $rang);
@@ -310,53 +307,8 @@ class TransactionDataTest extends TestCase
             "&PBX_RETOUR=$feedback" .
             "&PBX_PORTEUR=$holder" .
             "&PBX_TOTAL=$total" .
-            "&PBX_HASH=$hash" .
-            "&PBX_HMAC=$hmac",
-            $result);
-    }
-
-    public function testToStringForHashComputation()
-    {
-        $total = 10.0;
-        $rang = 7;
-        $site = 1234567;
-        $id = 123;
-        $devise = Devises::EUR;
-        $command = 'some-customer-id';
-        $hash = HashValue::SHA512;
-        $hmac = '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969';
-        $holder = 'this-is-me@somewhere.tld';
-        $time = 1600424772;  // The date when the test was created
-        $feedback = 'Mt:M';
-
-        $transaction = TransactionData::fromData([
-            'total' => $total,
-            'rang' => $rang,
-            'site' => $site,
-            'id' => $id,
-            'devise' => $devise,
-            'command' => $command,
-            'hash' => $hash,
-            'hmac' => $hmac,
-            'holder' => $holder,
-            'time' => $time,
-            'feedback' => $feedback,
-        ]);
-
-        $result = $transaction->toString(TransactionData::WithoutHMAC);
-        $rang = sprintf("%'.03d", $rang);
-
-        $this->assertSame("PBX_SITE=$site" .
-            "&PBX_RANG=$rang" .
-            "&PBX_IDENTIFIANT=$id" .
-            "&PBX_DEVISE=$devise" .
-            "&PBX_CMD=$command" .
-            "&PBX_RETOUR=$feedback" .
-            "&PBX_PORTEUR=$holder" .
-            "&PBX_TOTAL=$total" .
             "&PBX_HASH=$hash",
             $result);
-
     }
 
     public function testIsValid()
@@ -369,10 +321,10 @@ class TransactionDataTest extends TestCase
             'devise' => Devises::EUR,
             'command' => 'some-customer-id',
             'hash' => HashValue::SHA512,
-            'hmac' => '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969',
             'holder' => 'this-is-me@somewhere.tld',
             'time' => 1600424772,
             'feedback' => 'Mt:M',
+            'secret' => '123456789aef'
         ]);
 
         $result = $transaction->isValid();
@@ -389,8 +341,8 @@ class TransactionDataTest extends TestCase
         $devise = Devises::EUR;
         $command = 'some-customer-id';
         $hash = HashValue::SHA512;
-        $hmac = '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969';
         $holder = 'this-is-me@somewhere.tld';
+        $secretKey = '012356789abcdef';
 
         $transaction = new TransactionData();
         $transaction->setTotal(new TotalValue($total));
@@ -400,9 +352,8 @@ class TransactionDataTest extends TestCase
         $transaction->setDevise(new DeviseValue($devise));
         $transaction->setCommand(new CommandValue($command));
         $transaction->setHash(new HashValue($hash));
-        $transaction->setHMAC(new HMACValue($hmac));
         $transaction->setHolder(new HolderValue($holder));
-
+        $transaction->setSecret(new SecretValue($secretKey));
         $result = $transaction->isValid();
 
         $this->assertFalse($result);

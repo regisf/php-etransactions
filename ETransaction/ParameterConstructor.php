@@ -9,19 +9,12 @@ class ParameterConstructor
     private $container;
 
     /**
-     * @var bool
-     */
-    private $withoutHMAC;
-
-    /**
      * ParameterConstructor constructor.
      * @param TransactionData $container
-     * @param bool $withoutHMAC if set, don't add the HMAC field
      */
-    public function __construct($container, $withoutHMAC)
+    public function __construct($container)
     {
         $this->container = $container;
-        $this->withoutHMAC = $withoutHMAC;
     }
 
     /**
@@ -32,7 +25,7 @@ class ParameterConstructor
         $fields = [];
 
         foreach ($this->container->getIterator() as $field) {
-            if ($this->withoutHMAC === true && $field->getName() === 'HMACValue') {
+            if ($field->getName() === 'HMACValue') {
                 continue;
             }
 

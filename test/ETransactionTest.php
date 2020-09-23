@@ -28,10 +28,10 @@ class ETransactionTest extends TestCase
             'devise' => Devises::EUR,
             'command' => 'some-customer-id',
             'hash' => HashValue::SHA512,
-            'hmac' => '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969',
             'holder' => 'this-is-me@somewhere.tld',
             'time' => 1600424772,
             'feedback' => 'Mt:M',
+            'secret' => '012456789abcdef'
         ]);
 
         $transac = new ETransaction(true);
@@ -76,7 +76,7 @@ class ETransactionTest extends TestCase
         $this->assertFalse($transac->isSandbox());
     }
 
-    public function testProcessTransaction()
+    public function testGetTransactionForm()
     {
         $transaction = new ETransaction(true);
         if ($transaction->pingRemote() === false) {
@@ -92,14 +92,14 @@ class ETransactionTest extends TestCase
             'devise' => Devises::EUR,
             'command' => 'some-customer-id',
             'hash' => HashValue::SHA512,
-            'hmac' => '185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969',
             'holder' => 'this-is-me@somewhere.tld',
             'time' => 1600424772,
             'feedback' => 'Mt:M',
+            'secret' => '0123456789abcdef'
         ]);
 
         $transaction->setTransactionData($transactionData);
-        $transaction->processTransaction();
+        $transaction->getTransactionForm();
     }
 
 }

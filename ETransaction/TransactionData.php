@@ -13,14 +13,10 @@ require_once 'ETransaction/Values/RangValue.php';
 require_once 'ETransaction/Values/SiteValue.php';
 require_once 'ETransaction/Values/TimeValue.php';
 require_once 'ETransaction/Values/TotalValue.php';
-
+require_once 'ETransaction/TransactionDataIterator.php';
 
 class TransactionData
 {
-    /* Declare boolean constants for expressiveness */
-    const WithoutHMAC = true;
-    const WithHMAC = false;
-
     /**
      * @var TotalValue
      */
@@ -70,10 +66,16 @@ class TransactionData
      * @var TimeValue
      */
     private $param;
+
     /**
      * @var FeedbackValue
      */
     private $feedback;
+
+    /**
+     * @var SecretValue
+     */
+    private $secretKey;
 
     /**
      * Factory : create a container from data.
@@ -100,10 +102,13 @@ class TransactionData
             $container->setDevise(new DeviseValue($data['devise']));
             $container->setCommand(new CommandValue($data['command']));
             $container->setHash(new HashValue($data['hash']));
-            $container->setHMAC(new HMACValue($data['hmac']));
+
             $container->setHolder(new HolderValue($data['holder']));
             $container->setTime(new TimeValue($data['time']));
             $container->setFeedback(new FeedbackValue($data['feedback']));
+
+            $parameters = $container->toString();
+            $container->setHMAC(new HMACValue($data['secret'], $parameters, $container->getHash()));
         }
 
         return $container;
@@ -111,7 +116,7 @@ class TransactionData
 
     public function areRequiredKeysExist(array $data, array &$missingKeys = [])
     {
-        $requiredKey = ['total', 'rang', 'site', 'id', 'devise', 'command', 'hash', 'hmac', 'holder', 'time', 'feedback'];
+        $requiredKey = ['total', 'rang', 'site', 'id', 'devise', 'command', 'hash', 'holder', 'time', 'feedback', 'secret'];
 
         foreach ($requiredKey as $required) {
             if (!array_key_exists($required, $data)) {
@@ -259,6 +264,22 @@ class TransactionData
     }
 
     /**
+     * @param SecretValue $secretKey
+     */
+    public function setSecret($secretKey)
+    {
+        $this->secretKey = $secretKey;
+    }
+
+    /**
+     * @return SecretValue The secret key for the transaction
+     */
+    public function getSecret()
+    {
+        return $this->secretKey;
+    }
+
+    /**
      * Test is all required fields are instanced.The value objects can't be created with wrong values
      *
      * @return bool True if all required values exists.
@@ -278,46 +299,40 @@ class TransactionData
             $this->getHMAC() !== null;
     }
 
-    /**
-     * Encode all fields send as parameters.
-     */
-    public function encodeParameters()
+    public function toString()
     {
-        $params = $this->toString(TransactionData::WithoutHMAC);
-        $binarizedSecretKey = $this->getHMAC()->binarize();
-
-        return $params;
-    }
-
-    public function toString($withoutHMAC = TransactionData::WithHMAC)
-    {
-        $fields = $this->getFilledFields($withoutHMAC);
+        $fields = $this->getFilledFields();
         return implode('&', $fields);
     }
 
     /**
      * Get all fields serialized. They must be always in the same order.
      *
-     * @param bool $withoutHMAC A boolean parameter
      * @return array All filled serialized as a string
      */
-    private function getFilledFields($withoutHMAC)
+    private function getFilledFields()
     {
-        $parameterConstructor = new ParameterConstructor($this, $withoutHMAC);
+        $parameterConstructor = new ParameterConstructor($this);
         return $parameterConstructor->asArray();
     }
 
-    public function toForm()
+    public function toForm(callable $formatter = null)
     {
-        return $this->getSite()->toForm() .
-            $this->getRang()->toForm() .
-            $this->getId()->toForm() .
-            $this->getDevise()->toForm() .
-            $this->getCommand()->toForm() .
-            $this->getFeedback()->toForm() .
-            $this->getHolder()->toForm() .
-            $this->getTotal()->toForm() .
-            $this->getHash()->toForm() .
-            $this->getHMAC()->toForm();
+        if ($formatter == null) {
+            $formatter = function ($el) {
+                return $el;
+            };
+        }
+
+        return $formatter($this->getSite()->toForm()) .
+            $formatter($this->getRang()->toForm()) .
+            $formatter($this->getId()->toForm()) .
+            $formatter($this->getDevise()->toForm()) .
+            $formatter($this->getCommand()->toForm()) .
+            $formatter($this->getFeedback()->toForm()) .
+            $formatter($this->getHolder()->toForm()) .
+            $formatter($this->getTotal()->toForm()) .
+            $formatter($this->getHash()->toForm()) .
+            $formatter($this->getHMAC()->toForm());
     }
 }

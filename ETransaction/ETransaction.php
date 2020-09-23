@@ -1,6 +1,9 @@
 <?php
 
-require_once 'Exceptions/ETransactionException.php';
+require_once 'ETransaction/Exceptions/ETransactionException.php';
+require_once 'ETransaction/TransactionData.php';
+require_once 'ETransaction/Devises.php';
+
 
 /**
  * Crédit Agricole e-Transaction Library
@@ -19,8 +22,13 @@ class ETransaction
     /**
      * @var TransactionData
      */
-    private $transactionContainer;
+    private $transactionData;
 
+    /**
+     * ETransaction constructor.
+     *
+     * @param false $usePreprod If set to True, we will use the preproduction server
+     */
     public function __construct($usePreprod = false)
     {
         $this->preprod = $usePreprod;
@@ -40,7 +48,15 @@ class ETransaction
             throw new ETransactionException('Transaction is invalid');
         }
 
-        $this->transactionContainer = $data;
+        $this->transactionData = $data;
+    }
+
+    /**
+     * @return TransactionData
+     */
+    public function getTransactionData()
+    {
+        return $this->transactionData;
     }
 
     /**
@@ -52,19 +68,26 @@ class ETransaction
     public function pingRemote()
     {
         $address = $this->constructPingUrl();
+        $status = $this->loadStatusValue($address);
+
+        return $status === 'OK';
+    }
+
+    /**
+     * Load the status from the server. It's a simple page that contains
+     * a simple tag <div> with the id: server_status.
+     *
+     * @param $address
+     * @return string The tag content
+     */
+    public function loadStatusValue($address)
+    {
         $doc = new DOMDocument();
-        try {
-            $result = $doc->loadHTMLFile($address);
-            if (! $result) {
-                die('Unable to ping the server : '. $address);
-            }
+        $doc->loadHTMLFile($address);
 
-            $status = $doc->getElementById('server_status')->textContent;
-            return $status === 'OK';
-
-        } catch (Exception $e) {
-            return false;
-        }
+        return $doc
+            ->getElementById('server_status')
+            ->textContent;
     }
 
     private function constructPingUrl()
@@ -72,7 +95,14 @@ class ETransaction
         return $this->scheme . $this->getServer() . '.' . $this->pingAddress;
     }
 
-    private function constructUrl()
+    public function getTransactionForm()
+    {
+        return $this->getTransactionData()->toForm(function ($row) {
+            return "<div>$row</div>";
+        });
+    }
+
+    public function getServerAddress()
     {
         return $this->scheme . $this->getServer() . '.' . $this->postfix;
     }
