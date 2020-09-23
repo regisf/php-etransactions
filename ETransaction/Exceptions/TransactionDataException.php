@@ -1,5 +1,5 @@
 <?php
 
-class TransactionContainerException extends Exception
+class TransactionDataException extends Exception
 {
 }

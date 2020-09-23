@@ -1,6 +1,6 @@
 <?php
 
-require_once 'ETransaction/Exceptions/TransactionContainerException.php';
+require_once 'ETransaction/Exceptions/TransactionDataException.php';
 require_once 'ETransaction/ParameterConstructor.php';
 require_once 'ETransaction/Values/CommandValue.php';
 require_once 'ETransaction/Values/DeviseValue.php';
@@ -80,7 +80,7 @@ class TransactionData
      *
      * @param $data array
      * @return TransactionData
-     * @throws TransactionContainerException|ValueException
+     * @throws TransactionDataException|ValueException
      */
     public static function fromData(array $data)
     {
@@ -90,7 +90,7 @@ class TransactionData
             $missingKeys = [];
             $result = $container->areRequiredKeysExist($data, $missingKeys);
             if ($result === false) {
-                throw new TransactionContainerException('Missing required keys: ' . join(', ', $missingKeys));
+                throw new TransactionDataException('Missing required keys: ' . join(', ', $missingKeys));
             }
 
             $container->setTotal(new TotalValue($data['total']));
@@ -125,12 +125,6 @@ class TransactionData
     public function setTime(TimeValue $param)
     {
         $this->param = $param;
-    }
-
-    public function toString($withoutHMAC = TransactionData::WithHMAC)
-    {
-        $fields = $this->getFilledFields($withoutHMAC);
-        return implode('&', $fields);
     }
 
     public function getTime()
@@ -249,6 +243,22 @@ class TransactionData
     }
 
     /**
+     * @return HMacValue
+     */
+    public function getHMAC()
+    {
+        return $this->hmac;
+    }
+
+    /**
+     * @param HMacValue $hmac
+     */
+    public function setHMAC(HMacValue $hmac)
+    {
+        $this->hmac = $hmac;
+    }
+
+    /**
      * Test is all required fields are instanced.The value objects can't be created with wrong values
      *
      * @return bool True if all required values exists.
@@ -271,11 +281,18 @@ class TransactionData
     /**
      * Encode all fields send as parameters.
      */
-    private function encodeParameters()
+    public function encodeParameters()
     {
-        $params = $this->getFilledFields(TransactionData::WithoutHMAC);
+        $params = $this->toString(TransactionData::WithoutHMAC);
         $binarizedSecretKey = $this->getHMAC()->binarize();
 
+        return $params;
+    }
+
+    public function toString($withoutHMAC = TransactionData::WithHMAC)
+    {
+        $fields = $this->getFilledFields($withoutHMAC);
+        return implode('&', $fields);
     }
 
     /**
@@ -290,19 +307,17 @@ class TransactionData
         return $parameterConstructor->asArray();
     }
 
-    /**
-     * @return HMacValue
-     */
-    public function getHMAC()
+    public function toForm()
     {
-        return $this->hmac;
-    }
-
-    /**
-     * @param HMacValue $hmac
-     */
-    public function setHMAC(HMacValue $hmac)
-    {
-        $this->hmac = $hmac;
+        return $this->getSite()->toForm() .
+            $this->getRang()->toForm() .
+            $this->getId()->toForm() .
+            $this->getDevise()->toForm() .
+            $this->getCommand()->toForm() .
+            $this->getFeedback()->toForm() .
+            $this->getHolder()->toForm() .
+            $this->getTotal()->toForm() .
+            $this->getHash()->toForm() .
+            $this->getHMAC()->toForm();
     }
 }
