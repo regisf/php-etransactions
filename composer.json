@@ -1,4 +1,12 @@
 {
+  "name": "etransaction/etransaction",
+  "version": "1.0.0",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/regisf/php-etransactions"
+    }
+  ],
   "require-dev": {
     "mockery/mockery": "dev-master",
     "phpunit/phpunit": "^9.3"
