@@ -9,25 +9,25 @@ class TimeValue extends ValueBase
     protected $fieldName = 'PBX_TIME';
 
     /**
-     * TimeValue constructor, allow no value.
+     * TimeValue constructor. If no timestamp is given, the current timestamp is set using the 'time()' function.
      *
-     * @param int $timestamp The
+     * @param int $timestamp The timestamp for the transaction
      * @throws ValueException
+     * @see time
      */
     public function __construct($timestamp = 0)
     {
-        parent::__construct($timestamp);
+        if ($timestamp === 0) {
+            $timestamp = time();
+        }
 
+        parent::__construct($timestamp);
     }
 
     public function isValueRegular($value)
     {
         if (gettype($value) !== 'integer') {
             return 'The TimeValue object requires an integer as parameter';
-        }
-
-        if ($value === 0) {
-            $timestamp = time();
         }
 
         return false;
