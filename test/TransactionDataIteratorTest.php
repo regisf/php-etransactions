@@ -13,7 +13,7 @@ class TransactionDataIteratorTest extends TestCase
         $it = new TransactionDataIterator($arr);
 
         $result = [];
-        foreach ($it as $item) {
+        foreach ($it as $idx => $item) {
             array_push($result, $item);
         }
 
