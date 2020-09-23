@@ -7,7 +7,10 @@ class TimeValueTest extends TestCase
     public function testIsValueRegular()
     {
         $timeValue = new TimeValue();
-        $this->assertSame(gettype($timeValue->getValue()), 'string');
+
+        // Testing with a regex because time() is unknown
+        $this->assertMatchesRegularExpression('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/',
+            $timeValue->getValue());
     }
 
     public function testToString()
