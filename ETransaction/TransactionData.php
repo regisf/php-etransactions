@@ -316,23 +316,17 @@ class TransactionData
         return $parameterConstructor->asArray();
     }
 
-    public function toForm(callable $formatter = null)
+    public function toForm()
     {
-        if ($formatter == null) {
-            $formatter = function ($el) {
-                return $el;
-            };
-        }
-
-        return $formatter($this->getSite()->toForm()) .
-            $formatter($this->getRang()->toForm()) .
-            $formatter($this->getId()->toForm()) .
-            $formatter($this->getDevise()->toForm()) .
-            $formatter($this->getCommand()->toForm()) .
-            $formatter($this->getFeedback()->toForm()) .
-            $formatter($this->getHolder()->toForm()) .
-            $formatter($this->getTotal()->toForm()) .
-            $formatter($this->getHash()->toForm()) .
-            $formatter($this->getHMAC()->toForm());
+        return $this->getSite()->toForm() .
+            $this->getRang()->toForm() .
+            $this->getId()->toForm() .
+            $this->getDevise()->toForm() .
+            $this->getCommand()->toForm() .
+            $this->getFeedback()->toForm() .
+            $this->getHolder()->toForm() .
+            $this->getTotal()->toForm() .
+            $this->getHash()->toForm() .
+            $this->getHMAC()->toForm();
     }
 }

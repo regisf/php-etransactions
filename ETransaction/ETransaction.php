@@ -97,9 +97,7 @@ class ETransaction
 
     public function getTransactionForm()
     {
-        return $this->getTransactionData()->toForm(function ($row) {
-            return "<div>$row</div>";
-        });
+        return $this->getTransactionData()->toForm();
     }
 
     public function getServerAddress()
