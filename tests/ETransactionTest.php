@@ -1,6 +1,6 @@
 <?php
 
-require_once "ETransaction/ETransaction.php";
+require_once "ETransactions/ETransaction.php";
 
 use PHPUnit\Framework\TestCase;
 

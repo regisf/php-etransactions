@@ -1,8 +1,8 @@
 <?php
 
-require_once 'ETransaction/Exceptions/ETransactionException.php';
-require_once 'ETransaction/TransactionData.php';
-require_once 'ETransaction/Devises.php';
+require_once 'ETransactions/Exceptions/ETransactionException.php';
+require_once 'ETransactions/TransactionData.php';
+require_once 'ETransactions/Devises.php';
 
 
 /**
@@ -25,7 +25,7 @@ class ETransaction
     private $transactionData;
 
     /**
-     * ETransaction constructor.
+     * ETransactions constructor.
      *
      * @param false $usePreprod If set to True, we will use the preproduction server
      */

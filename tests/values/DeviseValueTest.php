@@ -1,8 +1,8 @@
 <?php
 
-require_once 'ETransaction/Devises.php';
-require_once 'ETransaction/Values/DeviseValue.php';
-require_once 'ETransaction/Exceptions/ValueException.php';
+require_once 'ETransactions/Devises.php';
+require_once 'ETransactions/Values/DeviseValue.php';
+require_once 'ETransactions/Exceptions/ValueException.php';
 
 use PHPUnit\Framework\TestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'ETransaction/Values/SecretValue.php';
+require_once 'ETransactions/Values/SecretValue.php';
 
 use PHPUnit\Framework\TestCase;
 

@@ -1,19 +1,19 @@
 <?php
 
-require_once 'ETransaction/TransactionData.php';
-require_once 'ETransaction/Devises.php';
-require_once 'ETransaction/Values/CommandValue.php';
-require_once 'ETransaction/Values/FeedbackValue.php';
-require_once 'ETransaction/Values/HashValue.php';
-require_once 'ETransaction/Values/HMACValue.php';
-require_once 'ETransaction/Values/HolderValue.php';
-require_once 'ETransaction/Values/IDValue.php';
-require_once 'ETransaction/Values/RangValue.php';
-require_once 'ETransaction/Values/SiteValue.php';
-require_once 'ETransaction/Values/TimeValue.php';
-require_once 'ETransaction/Values/TotalValue.php';
-require_once 'ETransaction/Exceptions/TransactionDataException.php';
-require_once 'ETransaction/ParameterConstructor.php';
+require_once 'ETransactions/TransactionData.php';
+require_once 'ETransactions/Devises.php';
+require_once 'ETransactions/Values/CommandValue.php';
+require_once 'ETransactions/Values/FeedbackValue.php';
+require_once 'ETransactions/Values/HashValue.php';
+require_once 'ETransactions/Values/HMACValue.php';
+require_once 'ETransactions/Values/HolderValue.php';
+require_once 'ETransactions/Values/IDValue.php';
+require_once 'ETransactions/Values/RangValue.php';
+require_once 'ETransactions/Values/SiteValue.php';
+require_once 'ETransactions/Values/TimeValue.php';
+require_once 'ETransactions/Values/TotalValue.php';
+require_once 'ETransactions/Exceptions/TransactionDataException.php';
+require_once 'ETransactions/ParameterConstructor.php';
 
 
 use PHPUnit\Framework\TestCase;

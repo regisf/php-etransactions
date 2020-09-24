@@ -1,6 +1,6 @@
 <?php
 
-require_once "ETransaction/TransactionDataIterator.php";
+require_once "ETransactions/TransactionDataIterator.php";
 
 use PHPUnit\Framework\TestCase;
 

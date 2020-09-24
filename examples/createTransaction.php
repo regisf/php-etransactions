@@ -1,6 +1,6 @@
 <?php
 
-require_once 'ETransaction/ETransaction.php';
+require_once 'ETransactions/ETransaction.php';
 
 // Instantiate a e-Transaction object  (be shine not for real)
 $transaction = new ETransaction(true);

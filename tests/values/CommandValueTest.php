@@ -1,13 +1,14 @@
 <?php
 
-require_once 'ETransaction/Values/CommandValue.php';
-require_once 'ETransaction/Exceptions/ValueException.php';
+require_once 'ETransactions/Values/CommandValue.php';
+require_once 'ETransactions/Exceptions/ValueException.php';
 
 use PHPUnit\Framework\TestCase;
 
 class CommandValueTest extends TestCase
 {
-    public function testCommandValue() {
+    public function testCommandValue()
+    {
         $expected = 'some-id-for-customer-command';
         $cmdValue = new CommandValue($expected);
         $this->assertSame($cmdValue->getValue(), $expected);

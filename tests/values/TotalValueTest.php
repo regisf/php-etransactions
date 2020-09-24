@@ -1,7 +1,7 @@
 <?php
 
-require_once 'ETransaction/Exceptions/ValueException.php';
-require_once 'ETransaction/Values/TotalValue.php';
+require_once 'ETransactions/Exceptions/ValueException.php';
+require_once 'ETransactions/Values/TotalValue.php';
 
 use PHPUnit\Framework\TestCase;
 

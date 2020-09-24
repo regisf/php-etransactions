@@ -1,9 +1,9 @@
 <?php
 /*
- * Demonstrate how to use ETransaction::pingRemote
+ * Demonstrate how to use ETransactions::pingRemote
  */
 
-require_once 'ETransaction/ETransaction.php';
+require_once 'ETransactions/ETransaction.php';
 
 
 echo("Testing preprod server... ");
