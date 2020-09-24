@@ -42,10 +42,6 @@ class ParameterConstructor
         $fields = [];
 
         foreach ($this->container->getIterator() as $field) {
-            if ($field->getName() === 'HMACValue') {
-                continue;
-            }
-
             array_push($fields, $field->toString());
         }
 

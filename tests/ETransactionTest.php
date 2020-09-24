@@ -114,12 +114,29 @@ class ETransactionTest extends TestCase
         $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_RANG"\s+value="7"\s*\/>/', $form);
         $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_IDENTIFIANT"\s+value="123"\s*\/>/', $form);
         $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_DEVISE"\s+value="978"\s*\/>/', $form);
-        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_CMD"\s+value="some-\s*ustomer-id" \/>/', $form);
-        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_RETOUR"\s+value="Mt:\s*" \/>/', $form);
-        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_PORTEUR"\s+value="this-\s*s-me@somewhere.tld" \/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_CMD"\s+value="some-\s*customer-id" \/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_RETOUR"\s+value="Mt:M"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_PORTEUR"\s+value="this-is-me@somewhere.tld"\s*\/>/', $form);
         $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_TOTAL"\s+value="10"\s*\/>/', $form);
         $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_HASH"\s+value="SHA512"\s*\/>/', $form);
         $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_HMAC"\s+value="\w+"\s*\/>/', $form);
     }
 
+    public function testGetServerAddressForPreprod()
+    {
+        $etransactions = new ETransaction(true);
+        $result = $etransactions->getServerAddress();
+
+        $this->assertSame('https://preprod-tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi',
+            $result);
+    }
+
+    public function testGetServerAddressForProd()
+    {
+        $etransactions = new ETransaction(false);
+        $result = $etransactions->getServerAddress();
+
+        $this->assertSame('https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi',
+            $result);
+    }
 }
