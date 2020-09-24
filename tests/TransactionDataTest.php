@@ -270,6 +270,16 @@ class TransactionDataTest extends TestCase
         $this->assertSame($expected->getValue(), $result);
     }
 
+    public function testSetSecret()
+    {
+        $secret = '0123456789abcdef';
+        $secretValue = new SecretValue($secret);
+        $transac = new TransactionData();
+        $transac->setSecret($secretValue);
+
+        $this->assertSame($secret, $transac->getSecret()->getValue());
+    }
+
     public function testToString()
     {
         $total = 10.0;
