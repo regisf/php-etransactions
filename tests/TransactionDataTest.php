@@ -30,7 +30,7 @@ class TransactionDataTest extends TestCase
         $command = 'some-customer-id';
         $hash = 'SHA512';
         $holder = 'this-is-me@somewhere.tld';
-        $time = 1600424772;  // The date when the test was created
+        $time = 1600424772;  // The date when the tests was created
         $feedback = 'Mt:M';
 
         $transaction = TransactionData::fromData([
@@ -280,7 +280,7 @@ class TransactionDataTest extends TestCase
         $command = 'some-customer-id';
         $hash = HashValue::SHA512;
         $holder = 'this-is-me@somewhere.tld';
-        $time = 1600424772;  // The date when the test was created
+        $time = 1600424772;  // The date when the tests was created
         $feedback = 'Mt:M';
 
         $transaction = TransactionData::fromData([

@@ -13,6 +13,12 @@ class IDValueTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
+    public function testIDValueShouldRaiseException()
+    {
+        $this->expectException(ValueException::class);
+        new IDValue('1234567890123456789'); // Much more than 9
+    }
+
     public function testToString()
     {
         $value = 123;

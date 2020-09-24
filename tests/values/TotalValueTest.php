@@ -39,6 +39,12 @@ class TotalValueTest extends TestCase
         $value = new TotalValue($expected);
         $result = $value->toString();
         $this->assertSame($result, "PBX_TOTAL=$expected");
+    }
+
+    public function testIsValueRegularAnythingButIntegerOrDouble()
+    {
+        $this->expectException(ValueException::class);
+        new TotalValue("hello");
 
     }
 }

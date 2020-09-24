@@ -18,4 +18,10 @@ class TimeValueTest extends TestCase
         $timeValue = new TimeValue(1); // 1 second after the Big Bang
         $this->assertSame($timeValue->toString(), "PBX_TIME=1970-01-01T00:00:01+00:00");
     }
+
+    public function testIsValueRegularNotAStringThrowException()
+    {
+        $this->expectException(ValueException::class);
+        new TimeValue('hello, world');
+    }
 }
