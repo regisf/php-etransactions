@@ -7,8 +7,8 @@ Warning: The full solution isn't fully implemented. See [Missing](#missing-featu
 Crédit Agricole is later named "CA" in this documentation.
 
 You also should be able to use this library with the Verifone Paybox system. 
-_Note: The system is a french system, unfortunatly there's a lot of french words_.
 
+_Note: The system is a french system, unfortunatly there's a lot of french words_.
 
 ## Install
 
@@ -121,6 +121,29 @@ parameters (see PBX_RETOUR into the documentation).
 * Denied (`REFUSE`): The URL when the pavement is denied. 
 * Canceled (`ANNULE`): The URL when the user cancel the payement.
 
+To set callback addresses, add related keys in the `TransactionData::fromData` factory:
+
+```php
+$transactionData = TransactionData::fromData([
+    // Required fields above
+    'callback' => [
+        'done' => 'https://my-website.com/payement/done',
+        'denied' => 'https://my-website.com/payement/denied',
+        'canceled' => 'https://my-website.com/payement/canceled',
+    ]
+]);
+```
+
+or 
+
+```php
+$transactionData = new TransactionData();
+$transactionData->setDoneCallback('https://my-website.com/payement/done');
+$transactionData->setDeniedCallback('https://my-website.com/payement/denied');
+$transactionData->setCanceledCallback('https://my-website.com/payement/canceled');
+
+```
+
 ### Missing features
 
 * Card choice,
@@ -129,4 +152,3 @@ parameters (see PBX_RETOUR into the documentation).
 * Recurring payments,
 * Advanced features,
 * Subscription management
-
