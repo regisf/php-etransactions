@@ -76,7 +76,7 @@ class ETransactionTest extends TestCase
         $this->assertFalse($transac->isSandbox());
     }
 
-    public function testGetTransactionForm()
+    public function testGetTransactionFormHaveAHMACField()
     {
         $transaction = new ETransaction(true);
         if ($transaction->pingRemote() === false) {
@@ -99,7 +99,17 @@ class ETransactionTest extends TestCase
         ]);
 
         $transaction->setTransactionData($transactionData);
-        $transaction->getTransactionForm();
+        $form = $transaction->getTransactionForm();
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_SITE"\s+value="1234567"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_RANG"\s+value="7"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_IDENTIFIANT"\s+value="123"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_DEVISE"\s+value="978"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_CMD"\s+value="some-\s*ustomer-id" \/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_RETOUR"\s+value="Mt:\s*" \/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_PORTEUR"\s+value="this-\s*s-me@somewhere.tld" \/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_TOTAL"\s+value="10"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_HASH"\s+value="SHA512"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_HMAC"\s+value="\w+"\s*\/>/', $form);
     }
 
 }
