@@ -18,6 +18,11 @@ class ETransactionTest extends TestCase
         $this->assertTrue($transac->isSandbox());
     }
 
+    /**
+     * @throws ETransactionException
+     * @throws TransactionDataException
+     * @throws ValueException
+     */
     public function testSetTransaction()
     {
         $data = TransactionData::fromData([
@@ -76,6 +81,11 @@ class ETransactionTest extends TestCase
         $this->assertFalse($transac->isSandbox());
     }
 
+    /**
+     * @throws ETransactionException
+     * @throws TransactionDataException
+     * @throws ValueException
+     */
     public function testGetTransactionFormHaveAHMACField()
     {
         $transaction = new ETransaction(true);
