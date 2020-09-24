@@ -53,11 +53,6 @@ class TransactionData
     private $hash;
 
     /**
-     * @var  HMacValue
-     */
-    private $hmac;
-
-    /**
      * @var HolderValue
      */
     private $holder;
@@ -99,16 +94,19 @@ class TransactionData
             $container->setSite(new SiteValue($data['site']));
             $container->setId(new IDValue($data['id']));
             $container->setRang(new RangValue($data['rang']));
-            $container->setDevise(new DeviseValue($data['devise']));
             $container->setCommand(new CommandValue($data['command']));
-            $container->setHash(new HashValue($data['hash']));
-
             $container->setHolder(new HolderValue($data['holder']));
-            $container->setTime(new TimeValue($data['time']));
             $container->setFeedback(new FeedbackValue($data['feedback']));
+            $container->setSecret(new SecretValue($data['secret']));
 
-            $parameters = $container->toString();
-            $container->setHMAC(new HMACValue($data['secret'], $parameters, $container->getHash()));
+            $time = isset($data['time']) ? $data['time'] : 0;
+            $container->setTime(new TimeValue($time));
+
+            $devise = isset($data['devise']) ? $data['devise'] : Devises::EUR;
+            $container->setDevise(new DeviseValue($devise));
+
+            $hash = isset($data['hash']) ? $data['hash'] : HashValue::SHA512;
+            $container->setHash(new HashValue($hash));
         }
 
         return $container;
@@ -116,7 +114,7 @@ class TransactionData
 
     public function areRequiredKeysExist(array $data, array &$missingKeys = [])
     {
-        $requiredKey = ['total', 'rang', 'site', 'id', 'devise', 'command', 'hash', 'holder', 'time', 'feedback', 'secret'];
+        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'holder', 'feedback', 'secret'];
 
         foreach ($requiredKey as $required) {
             if (!array_key_exists($required, $data)) {
@@ -152,8 +150,7 @@ class TransactionData
             $this->getFeedback(),
             $this->getHolder(),
             $this->getTotal(),
-            $this->getHash(),
-            $this->getHMAC(),
+            $this->getHash()
         ]);
     }
 
@@ -248,22 +245,6 @@ class TransactionData
     }
 
     /**
-     * @return HMacValue
-     */
-    public function getHMAC()
-    {
-        return $this->hmac;
-    }
-
-    /**
-     * @param HMacValue $hmac
-     */
-    public function setHMAC(HMacValue $hmac)
-    {
-        $this->hmac = $hmac;
-    }
-
-    /**
      * @param SecretValue $secretKey
      */
     public function setSecret($secretKey)
@@ -295,8 +276,7 @@ class TransactionData
             $this->getFeedback() !== null &&
             $this->getHolder() !== null &&
             $this->getTotal() !== null &&
-            $this->getHash() !== null &&
-            $this->getHMAC() !== null;
+            $this->getHash() !== null;
     }
 
     public function toString()
@@ -316,8 +296,17 @@ class TransactionData
         return $parameterConstructor->asArray();
     }
 
+    /**
+     * Create a form field with hidden input. The order is important.
+     * HMAC field is computed at this moment.
+     *
+     * @return string The HTML form content
+     * @throws ValueException When HMAC is not valid.
+     */
     public function toForm()
     {
+        $hmacValue = new HMACValue($this->getSecret(), $this->toString(), $this->getHash());
+
         return $this->getSite()->toForm() .
             $this->getRang()->toForm() .
             $this->getId()->toForm() .
@@ -327,6 +316,6 @@ class TransactionData
             $this->getHolder()->toForm() .
             $this->getTotal()->toForm() .
             $this->getHash()->toForm() .
-            $this->getHMAC()->toForm();
+            $hmacValue->toForm();
     }
 }
