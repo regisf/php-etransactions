@@ -31,7 +31,10 @@ require_once 'ETransactions/Values/RangValue.php';
 require_once 'ETransactions/Values/SiteValue.php';
 require_once 'ETransactions/Values/TimeValue.php';
 require_once 'ETransactions/Values/TotalValue.php';
+require_once 'ETransactions/Values/SecretValue.php';
+require_once 'ETransactions/Values/UrlValue.php';
 require_once 'ETransactions/TransactionDataIterator.php';
+require_once 'ETransactions/TransactionCallbacks.php';
 
 class TransactionData
 {
@@ -91,6 +94,19 @@ class TransactionData
     private $secretKey;
 
     /**
+     * @var TransactionCallbacks
+     */
+    private $callbacks;
+
+    /**
+     * TransactionData constructor : Initialize variables
+     */
+    public function __construct()
+    {
+        $this->callbacks = new TransactionCallbacks();
+    }
+
+    /**
      * Factory : create a container from data.
      *
      * @param $data array
@@ -108,6 +124,7 @@ class TransactionData
                 throw new TransactionDataException('Missing required keys: ' . join(', ', $missingKeys));
             }
 
+            // Required
             $container->setTotal(new TotalValue($data['total']));
             $container->setSite(new SiteValue($data['site']));
             $container->setId(new IDValue($data['id']));
@@ -125,6 +142,23 @@ class TransactionData
 
             $hash = isset($data['hash']) ? $data['hash'] : HashValue::SHA512;
             $container->setHash(new HashValue($hash));
+
+            // Non required fields
+            if (isset($data['callbacks'])) {
+                $callbacks = $data['callbacks'];
+
+                if (isset($callbacks['done'])) {
+                    $container->getCallbacks()->setDoneCallback(new UrlValue($callbacks['done'], UrlType::Done));
+                }
+
+                if (isset($callbacks['denied'])) {
+                    $container->getCallbacks()->setDeniedCallback(new UrlValue($callbacks['denied'], UrlType::Denied));
+                }
+
+                if (isset($callbacks['canceled'])) {
+                    $container->getCallbacks()->setCanceledCallback(new UrlValue($callbacks['canceled'], UrlType::Canceled));
+                }
+            }
         }
 
         return $container;
@@ -143,9 +177,22 @@ class TransactionData
         return sizeof($missingKeys) === 0;
     }
 
+    /**
+     * @param SecretValue $secretKey
+     */
+    public function setSecret($secretKey)
+    {
+        $this->secretKey = $secretKey;
+    }
+
     public function setTime(TimeValue $param)
     {
         $this->param = $param;
+    }
+
+    public function getCallbacks()
+    {
+        return $this->callbacks;
     }
 
     public function getTime()
@@ -263,22 +310,6 @@ class TransactionData
     }
 
     /**
-     * @param SecretValue $secretKey
-     */
-    public function setSecret($secretKey)
-    {
-        $this->secretKey = $secretKey;
-    }
-
-    /**
-     * @return SecretValue The secret key for the transaction
-     */
-    public function getSecret()
-    {
-        return $this->secretKey;
-    }
-
-    /**
      * Test is all required fields are instanced.The value objects can't be created with wrong values
      *
      * @return bool True if all required values exists.
@@ -297,6 +328,52 @@ class TransactionData
             $this->getHash() !== null;
     }
 
+    /**
+     * Create a form field with hidden input. The order is important.
+     * HMAC field is computed at this moment.
+     *
+     * @return string The HTML form content
+     * @throws ValueException When HMAC is not valid.
+     */
+    public function toForm()
+    {
+        $hmacValue = new HMACValue($this->getSecret(), $this->toString(), $this->getHash());
+
+        $value = $this->getSite()->toForm() .
+            $this->getRang()->toForm() .
+            $this->getId()->toForm() .
+            $this->getDevise()->toForm() .
+            $this->getCommand()->toForm() .
+            $this->getFeedback()->toForm() .
+            $this->getHolder()->toForm() .
+            $this->getTotal()->toForm() .
+            $this->getHash()->toForm();
+
+        if ($this->getCallbacks()->getDoneCallback() !== null) {
+            $value .= $this->getCallbacks()->getDoneCallback()->toForm();
+        }
+
+        if ($this->getCallbacks()->getCanceledCallback() !== null) {
+            $value .= $this->getCallbacks()->getCanceledCallback()->toForm();
+        }
+
+        if ($this->getCallbacks()->getDeniedCallback() !== null) {
+            $value .= $this->getCallbacks()->getDeniedCallback()->toForm();
+        }
+
+        $value .= $hmacValue->toForm();
+
+        return $value;
+    }
+
+    /**
+     * @return SecretValue The secret key for the transaction
+     */
+    public function getSecret()
+    {
+        return $this->secretKey;
+    }
+
     public function toString()
     {
         $fields = $this->getFilledFields();
@@ -312,28 +389,5 @@ class TransactionData
     {
         $parameterConstructor = new ParameterConstructor($this);
         return $parameterConstructor->asArray();
-    }
-
-    /**
-     * Create a form field with hidden input. The order is important.
-     * HMAC field is computed at this moment.
-     *
-     * @return string The HTML form content
-     * @throws ValueException When HMAC is not valid.
-     */
-    public function toForm()
-    {
-        $hmacValue = new HMACValue($this->getSecret(), $this->toString(), $this->getHash());
-
-        return $this->getSite()->toForm() .
-            $this->getRang()->toForm() .
-            $this->getId()->toForm() .
-            $this->getDevise()->toForm() .
-            $this->getCommand()->toForm() .
-            $this->getFeedback()->toForm() .
-            $this->getHolder()->toForm() .
-            $this->getTotal()->toForm() .
-            $this->getHash()->toForm() .
-            $hmacValue->toForm();
     }
 }

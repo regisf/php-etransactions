@@ -86,7 +86,7 @@ class ETransactionTest extends TestCase
      * @throws TransactionDataException
      * @throws ValueException
      */
-    public function testGetTransactionFormHaveAHMACField()
+    public function testGetTransactionForm()
     {
         $transaction = new ETransaction(true);
         if ($transaction->pingRemote() === false) {
@@ -138,5 +138,31 @@ class ETransactionTest extends TestCase
 
         $this->assertSame('https://tpeweb.e-transactions.fr/cgi/MYchoix_pagepaiement.cgi',
             $result);
+    }
+
+    public function testSetNotRequiredUrl()
+    {
+        $transactionData = TransactionData::fromData([
+            'total' => 10.0,
+            'rang' => 7,
+            'site' => 1234567,
+            'id' => 123,
+            'command' => 'some-customer-id',
+            'holder' => 'this-is-me@somewhere.tld',
+            'feedback' => 'Mt:M',
+            'secret' => '0123456789abcdef',
+            'callbacks'=> [
+                'done' => 'https://hello.com/accepted',
+                'denied' => 'https://hello.com/refused',
+                'canceled' => 'https://hello.com/cancel'
+            ]
+        ]);
+
+        $form = $transactionData->toForm();
+
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_EFFECTUE"\s+value="https:\/\/hello.com\/accepted"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_REFUSE"\s+value="https:\/\/hello.com\/refused"\s*\/>/', $form);
+        $this->assertMatchesRegularExpression('/\<input\s+type="hidden"\s+name="PBX_ANNULE"\s+value="https:\/\/hello.com\/cancel"\s*\/>/', $form);
+
     }
 }

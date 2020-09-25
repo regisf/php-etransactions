@@ -18,6 +18,11 @@ $transactionData = TransactionData::fromData([
     'command' => 'some-customer-id',
     'holder' => 'this-is-me@somewhere.tld',
     'feedback' => 'Mt:M',
+    'callbacks' => [
+        'done' => 'https://done.com/done',
+        'denied' => 'https://denied.com/denied',
+        'canceled' => 'https://canceled.com/canceled',
+    ]
 ]);
 
 $transaction->setTransactionData($transactionData);

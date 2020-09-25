@@ -78,15 +78,18 @@ or
 ```php
 // Using pure OOP
 $data = new TransactionData();
-$data->setRang(7);
-$data->setSite(1234567);
-$data->setId(123);
-$data->setSecret('001223489213651365165158');
-$data->setTotal(10.0);
-$data->setCommand('some-customer-id');
-$data->setHolder('this-is-me@somewhere.tld');
-$data->setFeedback('Mt:M');
+$data->setRang(new RangValue(7));
+$data->setSite(new SiteValue(1234567));
+$data->setId(new IDValue(123));
+$data->setSecret(new SecretValue('001223489213651365165158'));
+$data->setTotal(new TotalValue(10.0));
+$data->setCommand(new CommandValue('some-customer-id'));
+$data->setHolder(new HolderValue('this-is-me@somewhere.tld'));
+$data->setFeedback(new FeedbackValue('Mt:M'));
 ```
+
+As you may see we don't pass atomic values directly but we use an immutable object `*Value`. This 
+because we want to be sure that the passed value is correct and consistent.
 
 Now set the data and you are ready to display the form:
 
@@ -126,7 +129,7 @@ To set callback addresses, add related keys in the `TransactionData::fromData` f
 ```php
 $transactionData = TransactionData::fromData([
     // Required fields above
-    'callback' => [
+    'callbacks' => [
         'done' => 'https://my-website.com/payement/done',
         'denied' => 'https://my-website.com/payement/denied',
         'canceled' => 'https://my-website.com/payement/canceled',
@@ -138,11 +141,12 @@ or
 
 ```php
 $transactionData = new TransactionData();
-$transactionData->setDoneCallback('https://my-website.com/payement/done');
-$transactionData->setDeniedCallback('https://my-website.com/payement/denied');
-$transactionData->setCanceledCallback('https://my-website.com/payement/canceled');
-
+$transactionData->setDoneCallback(new UrlValue('https://my-website.com/payement/done', UrlType::Done));
+$transactionData->setDeniedCallback(new UrlValue('https://my-website.com/payement/denied', UrlType::Denied));
+$transactionData->setCanceledCallback(new UrlValue('https://my-website.com/payement/canceled', UrlType::Canceled));
 ```
+
+
 
 ### Missing features
 
