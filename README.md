@@ -38,11 +38,15 @@ Required fields are:
 * Device: Anything you want as long it is the euro (Default is EURO)
 * Command: Your own customer ID
 * Hash algorithm: How you compute the HMAC key? (Default is SHA512)
-* Holder: The email address of your customer (Porteur into the CA documentation)
 * Time: The desired transaction time as a timestamp (Default is now) 
 * Secret: The secret key as generated on [the backend](https://admin.e-transactions.fr/)
 * Feedback: How the [e-transactions](https://e-transactions.fr) system will inform you how the 
 transaction passed off.
+* Holder: The email address of your customer (Porteur into the CA documentation)
+
+**Caution**
+The holder field is not defined as required file internally and will not be checked. You might have an
+error on form submission.
 
 Required fields with default value could be ignored. 
 

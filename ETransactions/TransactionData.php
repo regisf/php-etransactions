@@ -166,7 +166,7 @@ class TransactionData
 
     public function areRequiredKeysExist(array $data, array &$missingKeys = [])
     {
-        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'holder', 'feedback', 'secret'];
+        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'feedback', 'secret'];
 
         foreach ($requiredKey as $required) {
             if (!array_key_exists($required, $data)) {
