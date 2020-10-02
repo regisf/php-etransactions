@@ -23,8 +23,9 @@ require_once __DIR__ . '/ValueBase.php';
 
 class HolderValue extends ValueBase
 {
+    const FieldName = 'PBX_PORTER';
     protected $name = __CLASS__;
-    protected $fieldName = 'PBX_PORTEUR';
+    protected $fieldName = self::FieldName;
 
     public function isValueRegular($value)
     {
@@ -33,5 +34,9 @@ class HolderValue extends ValueBase
         }
 
         return "The email = '$value' isn't a valid one";
+    }
+
+    public static function emptyForm() {
+        return '<input type="email" name="' . self::FieldName . '" value="" required placeholder="'. __('Your email address') .'" />';
     }
 }

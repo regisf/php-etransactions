@@ -18,6 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+require __DIR__  . '/../Exceptions/ValueException.php';
+
 abstract class ValueBase
 {
     protected $name = __CLASS__;

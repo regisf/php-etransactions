@@ -29,7 +29,7 @@ class RangValue extends ValueBase
     public function isValueRegular($value)
     {
         $v = (int)$value;
-        if ($v > 0 && $v < 100) {
+        if ($v > 0 && $v < 999) {
             return false;
         }
 

@@ -130,9 +130,17 @@ class TransactionData
             $container->setId(new IDValue($data['id']));
             $container->setRang(new RangValue($data['rang']));
             $container->setCommand(new CommandValue($data['command']));
-            $container->setHolder(new HolderValue($data['holder']));
-            $container->setFeedback(new FeedbackValue($data['feedback']));
             $container->setSecret(new SecretValue($data['secret']));
+
+            if (isset($data['feedback'])) {
+                $container->setFeedback(new FeedbackValue($data['feedback']));
+            } else {
+                $container->setFeedback(new FeedbackValue());
+            }
+
+            if (isset($data['holder'])) {
+                $container->setHolder(new HolderValue($data['holder']));
+            }
 
             $time = isset($data['time']) ? $data['time'] : 0;
             $container->setTime(new TimeValue($time));
@@ -166,7 +174,7 @@ class TransactionData
 
     public function areRequiredKeysExist(array $data, array &$missingKeys = [])
     {
-        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'feedback', 'secret'];
+        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'secret'];
 
         foreach ($requiredKey as $required) {
             if (!array_key_exists($required, $data)) {
@@ -323,7 +331,6 @@ class TransactionData
             $this->getDevise() !== null &&
             $this->getCommand() !== null &&
             $this->getFeedback() !== null &&
-            $this->getHolder() !== null &&
             $this->getTotal() !== null &&
             $this->getHash() !== null;
     }
@@ -345,9 +352,12 @@ class TransactionData
             $this->getDevise()->toForm() .
             $this->getCommand()->toForm() .
             $this->getFeedback()->toForm() .
-            $this->getHolder()->toForm() .
             $this->getTotal()->toForm() .
             $this->getHash()->toForm();
+
+        if ($this->getHolder() !== null) {
+            $value .= $this->getHolder()->toForm();
+        }
 
         if ($this->getCallbacks()->getDoneCallback() !== null) {
             $value .= $this->getCallbacks()->getDoneCallback()->toForm();
