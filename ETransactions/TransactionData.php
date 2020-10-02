@@ -18,23 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-require_once 'ETransactions/Exceptions/TransactionDataException.php';
-require_once 'ETransactions/ParameterConstructor.php';
-require_once 'ETransactions/Values/CommandValue.php';
-require_once 'ETransactions/Values/DeviseValue.php';
-require_once 'ETransactions/Values/FeedbackValue.php';
-require_once 'ETransactions/Values/HashValue.php';
-require_once 'ETransactions/Values/HMACValue.php';
-require_once 'ETransactions/Values/HolderValue.php';
-require_once 'ETransactions/Values/IDValue.php';
-require_once 'ETransactions/Values/RangValue.php';
-require_once 'ETransactions/Values/SiteValue.php';
-require_once 'ETransactions/Values/TimeValue.php';
-require_once 'ETransactions/Values/TotalValue.php';
-require_once 'ETransactions/Values/SecretValue.php';
-require_once 'ETransactions/Values/UrlValue.php';
-require_once 'ETransactions/TransactionDataIterator.php';
-require_once 'ETransactions/TransactionCallbacks.php';
+require_once __DIR__ . '/Exceptions/TransactionDataException.php';
+require_once __DIR__ . '/ParameterConstructor.php';
+require_once __DIR__ . '/Values/CommandValue.php';
+require_once __DIR__ . '/Values/DeviseValue.php';
+require_once __DIR__ . '/Values/FeedbackValue.php';
+require_once __DIR__ . '/Values/HashValue.php';
+require_once __DIR__ . '/Values/HMACValue.php';
+require_once __DIR__ . '/Values/HolderValue.php';
+require_once __DIR__ . '/Values/IDValue.php';
+require_once __DIR__ . '/Values/RangValue.php';
+require_once __DIR__ . '/Values/SiteValue.php';
+require_once __DIR__ . '/Values/TimeValue.php';
+require_once __DIR__ . '/Values/TotalValue.php';
+require_once __DIR__ . '/Values/SecretValue.php';
+require_once __DIR__ . '/Values/UrlValue.php';
+require_once __DIR__ . '/TransactionDataIterator.php';
+require_once __DIR__ . '/TransactionCallbacks.php';
 
 class TransactionData
 {

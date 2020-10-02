@@ -18,9 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-require_once 'ETransactions/Exceptions/ETransactionException.php';
-require_once 'ETransactions/TransactionData.php';
-require_once 'ETransactions/Devises.php';
+require_once __DIR__ . '/Exceptions/ETransactionException.php';
+require_once __DIR__ . '/TransactionData.php';
+require_once __DIR__ . '/Devises.php';
 
 
 /**

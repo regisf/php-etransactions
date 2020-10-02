@@ -47,6 +47,4 @@ class ParameterConstructor
 
         return $fields;
     }
-
-
 }
