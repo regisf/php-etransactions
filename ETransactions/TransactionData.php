@@ -131,6 +131,7 @@ class TransactionData
             $container->setRang(new RangValue($data['rang']));
             $container->setCommand(new CommandValue($data['command']));
             $container->setSecret(new SecretValue($data['secret']));
+            $container->setHolder(new HolderValue($data['holder']));
 
             if (isset($data['feedback'])) {
                 $container->setFeedback(new FeedbackValue($data['feedback']));
@@ -138,9 +139,8 @@ class TransactionData
                 $container->setFeedback(new FeedbackValue());
             }
 
-            if (isset($data['holder'])) {
-                $container->setHolder(new HolderValue($data['holder']));
-            }
+
+
 
             $time = isset($data['time']) ? $data['time'] : 0;
             $container->setTime(new TimeValue($time));
@@ -174,7 +174,7 @@ class TransactionData
 
     public function areRequiredKeysExist(array $data, array &$missingKeys = [])
     {
-        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'secret'];
+        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'holder', 'feedback', 'secret'];
 
         foreach ($requiredKey as $required) {
             if (!array_key_exists($required, $data)) {

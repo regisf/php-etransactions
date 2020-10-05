@@ -23,7 +23,7 @@ require_once __DIR__ . '/ValueBase.php';
 
 class HolderValue extends ValueBase
 {
-    const FieldName = 'PBX_PORTER';
+    const FieldName = 'PBX_PORTEUR';
     protected $name = __CLASS__;
     protected $fieldName = self::FieldName;
 
