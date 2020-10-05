@@ -217,18 +217,36 @@ class TransactionData
      */
     public function getIterator()
     {
-        return new TransactionDataIterator([
+        $iterator = new TransactionDataIterator([
             $this->getSite(),
             $this->getRang(),
             $this->getId(),
+            $this->getTotal(),
             $this->getDevise(),
             $this->getCommand(),
-            $this->getFeedback(),
             $this->getHolder(),
-            $this->getTotal(),
+            $this->getFeedback(),
             $this->getHash(),
             $this->getTime(),
         ]);
+
+        $doneCallback = $this->callbacks->getDoneCallback();
+        if ($doneCallback) {
+            $iterator->add($doneCallback);
+        }
+
+        $deniedCallback = $this->callbacks->getDeniedCallback();
+        if ($deniedCallback) {
+            $iterator->add($deniedCallback);
+        }
+
+        $cancelCallback = $this->callbacks->getCanceledCallback();
+        if ($cancelCallback) {
+            $iterator->add($cancelCallback);
+        }
+
+
+        return $iterator;
     }
 
     public function getSite()
@@ -351,15 +369,10 @@ class TransactionData
     {
         $hmacValue = new HMACValue($this->getSecret(), $this->toString(), $this->getHash());
 
-        $value = $this->getSite()->toForm() .
-            $this->getRang()->toForm() .
-            $this->getId()->toForm() .
-            $this->getDevise()->toForm() .
-            $this->getCommand()->toForm() .
-            $this->getFeedback()->toForm() .
-            $this->getTotal()->toForm() .
-            $this->getHash()->toForm() .
-            $this->getTime()->toForm();
+        $value = '';
+        foreach($this->getIterator() as $it) {
+            $value .= $it->toForm();
+        }
 
         if ($this->getHolder() !== null) {
             $value .= $this->getHolder()->toForm();

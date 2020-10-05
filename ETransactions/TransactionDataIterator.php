@@ -40,7 +40,6 @@ class TransactionDataIterator implements Iterator
      */
     public function __construct(array $fields)
     {
-
         $filtered = array_filter($fields, function ($v) {
             return !is_null($v);
         });
@@ -70,5 +69,10 @@ class TransactionDataIterator implements Iterator
     public function rewind()
     {
         $this->position = 0;
+    }
+
+    public function add($field)
+    {
+        array_push($this->fields, $field);
     }
 }
