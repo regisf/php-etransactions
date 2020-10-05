@@ -99,6 +99,11 @@ class TransactionData
     private $callbacks;
 
     /**
+     * @var TimeValue
+     */
+    private $time;
+
+    /**
      * TransactionData constructor : Initialize variables
      */
     public function __construct()
@@ -139,9 +144,6 @@ class TransactionData
                 $container->setFeedback(new FeedbackValue());
             }
 
-
-
-
             $time = isset($data['time']) ? $data['time'] : 0;
             $container->setTime(new TimeValue($time));
 
@@ -174,7 +176,7 @@ class TransactionData
 
     public function areRequiredKeysExist(array $data, array &$missingKeys = [])
     {
-        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'holder', 'feedback', 'secret'];
+        $requiredKey = ['total', 'rang', 'site', 'id', 'command', 'holder', 'secret'];
 
         foreach ($requiredKey as $required) {
             if (!array_key_exists($required, $data)) {
@@ -193,19 +195,20 @@ class TransactionData
         $this->secretKey = $secretKey;
     }
 
-    public function setTime(TimeValue $param)
-    {
-        $this->param = $param;
-    }
-
     public function getCallbacks()
     {
         return $this->callbacks;
     }
 
+
+    public function setTime(TimeValue $time)
+    {
+        $this->time = $time;
+    }
+
     public function getTime()
     {
-        return $this->param;
+        return $this->time;
     }
 
     /**
@@ -223,7 +226,8 @@ class TransactionData
             $this->getFeedback(),
             $this->getHolder(),
             $this->getTotal(),
-            $this->getHash()
+            $this->getHash(),
+            $this->getTime(),
         ]);
     }
 
@@ -332,7 +336,8 @@ class TransactionData
             $this->getCommand() !== null &&
             $this->getFeedback() !== null &&
             $this->getTotal() !== null &&
-            $this->getHash() !== null;
+            $this->getHash() !== null &&
+            $this->getTime() !== null;
     }
 
     /**
@@ -353,7 +358,8 @@ class TransactionData
             $this->getCommand()->toForm() .
             $this->getFeedback()->toForm() .
             $this->getTotal()->toForm() .
-            $this->getHash()->toForm();
+            $this->getHash()->toForm() .
+            $this->getTime()->toForm();
 
         if ($this->getHolder() !== null) {
             $value .= $this->getHolder()->toForm();
