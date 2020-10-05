@@ -63,7 +63,7 @@ abstract class ValueBase
 
     public function toForm()
     {
-        return '<input type="hidden" name="' . $this->fieldName . '" value="' . $this->value . '" />';
+        return '<input type="hidden" name="' . $this->fieldName . '" value="' . $this->getValue() . '" />';
     }
 
     public function toString()
