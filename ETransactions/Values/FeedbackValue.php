@@ -23,7 +23,7 @@ require_once __DIR__ . '/ValueBase.php';
 class FeedbackValue extends ValueBase
 {
     const ValidKey = 'MRTABCDEFGHIJjKNOoPQSUVWYZ';
-    const DefaultRetour = 'Mt:M;Ref:R;Auto:A;Erreur:E';
+    const DefaultRetour = 'M:M;R:R;T:T;A:A;B:B;C:C;D:D;E:E;F:F;G:G;I:I;J:J;N:N;O:O;P:P;Q:Q;S:S;W:W;Y:Y;K:K';
     protected $name = __CLASS__;
     protected $fieldName = 'PBX_RETOUR';
 
