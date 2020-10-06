@@ -21,6 +21,9 @@ class TransactionCallbacks
 
     public function setDoneCallback($done)
     {
+        if (gettype($done) === 'string') {
+            $done = new UrlValue($done, UrlType::Done);
+        }
         $this->done = $done;
     }
 
@@ -31,6 +34,10 @@ class TransactionCallbacks
 
     public function setDeniedCallback($denied)
     {
+        if (gettype($denied) === 'string') {
+            $denied = new UrlValue($denied, UrlType::Denied);
+        }
+
         $this->denied = $denied;
     }
 
@@ -41,6 +48,10 @@ class TransactionCallbacks
 
     public function setCanceledCallback($cancel)
     {
+        if (gettype($cancel) === 'string') {
+            $cancel = new UrlValue($cancel, UrlType::Canceled);
+        }
+
         $this->cancel = $cancel;
     }
 
