@@ -200,7 +200,6 @@ class TransactionData
         return $this->callbacks;
     }
 
-
     public function setTime(TimeValue $time)
     {
         $this->time = $time;
@@ -372,22 +371,6 @@ class TransactionData
         $value = '';
         foreach($this->getIterator() as $it) {
             $value .= $it->toForm();
-        }
-
-        if ($this->getHolder() !== null) {
-            $value .= $this->getHolder()->toForm();
-        }
-
-        if ($this->getCallbacks()->getDoneCallback() !== null) {
-            $value .= $this->getCallbacks()->getDoneCallback()->toForm();
-        }
-
-        if ($this->getCallbacks()->getCanceledCallback() !== null) {
-            $value .= $this->getCallbacks()->getCanceledCallback()->toForm();
-        }
-
-        if ($this->getCallbacks()->getDeniedCallback() !== null) {
-            $value .= $this->getCallbacks()->getDeniedCallback()->toForm();
         }
 
         $value .= $hmacValue->toForm();
