@@ -39,5 +39,10 @@ class TotalValue extends ValueBase
 
         return false;
     }
+
+    public function getValue()
+    {
+        return parent::getValue() * 100;
+    }
 }
 

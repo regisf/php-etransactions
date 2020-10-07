@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+
 /**
  * The Devises class allow you to set the devise you want regarding ISO
  * as long it is euro devise
