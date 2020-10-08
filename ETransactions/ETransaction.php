@@ -78,7 +78,7 @@ class ETransaction
     }
 
     /**
-     * Test the remote server. Either preprod and production servers expose a simple page:
+     * Test the remote server. Either preprod and production servers expose a simple pages:
      * load.html to test the server
      *
      * @return bool True on success
@@ -92,7 +92,7 @@ class ETransaction
     }
 
     /**
-     * Load the status from the server. It's a simple page that contains
+     * Load the status from the server. It's a simple pages that contains
      * a simple tag <div> with the id: server_status.
      *
      * @param $address
