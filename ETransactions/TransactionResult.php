@@ -32,7 +32,13 @@ class TransactionResult
 
     public static function fromRequest(array $request, $raw = '')
     {
+        // B is required as response. If it not exists, we are in edition mode
+        if (!isset($request['B'])) {
+            return null;
+        }
+
         $transactionResult = new TransactionResult($raw);
+
         if (isset($request['A'])) {
             $transactionResult->auth_id = $request['A'];
         }
