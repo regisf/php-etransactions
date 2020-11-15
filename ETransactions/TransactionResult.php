@@ -50,12 +50,15 @@ class TransactionResult
         }
 
         if (isset($request['D'])) {
-            $transactionResult->creit_card_end = $request['D'];
+            $transactionResult->credit_card_end = $request['D'];
         }
 
         $transactionResult->transaction_response_code = $request['E'];
         $transactionResult->country_code = $request['I'];
-        $transactionResult->amount = new TotalValue(floatval($request['M']) / 100.0);
+        
+        if (isset($request['M'])) {
+            $transactionResult->amount = new TotalValue(floatval($request['M']) / 100.0);
+        }
 
         if (isset($request['N'])) {
             $transactionResult->credit_card_id_end = $request['N'];
@@ -75,7 +78,7 @@ class TransactionResult
             $transactionResult->paybox_transaction_date = $request['W'];
         }
         $transactionResult->signature = $request['K'];
-//        $transactionResult->controlSignature();
+
         return $transactionResult;
     }
 
