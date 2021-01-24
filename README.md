@@ -14,7 +14,9 @@ _Note: The system is a french system, unfortunatly there's a lot of french words
 
 You could either use
 
-* Composer `composer install etransactions/etransactions`
+~Composer `composer require etransactions/etransactions`~ 
+It doesn't work with composer. I don't know how to do. If you have a solution, could you please create a Pull request? 
+
 * Zip file 
 * GIT
 
